@@ -1,8 +1,8 @@
 import { UserButton, SignedIn } from "@clerk/nextjs";
-import { authRole } from "./middlewares/authenticate";
+import { authenticate } from "./middlewares/authenticate";
 
 export default async function Home() {
-  await authRole();
+  await authenticate();
   return (
     <div>
       <SignedIn>

@@ -16,7 +16,7 @@ export async function setRole(id:string) {
   }
 }
 
-export async function authRole() {
+export async function authenticate() {
   const { userId } = auth();
 
   if (!userId) {

@@ -1,26 +1,14 @@
-import { redirect } from "next/navigation";
-import Sidebar from "./_components/Sidebar";
-import Header from "./_components/Header";
-import { ThemeProvider } from "next-themes";
+import { DataTable } from "./_components/DataTable";
+// import { authenticate } from "@/app/middlewares/authenticate";
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function page() {
+  // await authenticate();
 
   return (
-    <div
-      className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]"
-      suppressHydrationWarning={true}
-    >
-      <ThemeProvider attribute="class">
-        <Sidebar/>
-        <div className="flex flex-col h-screen">
-          <Header/>
-          {children}
-        </div>
-      </ThemeProvider>
-    </div>
+    <main className="flex flex-col gap-4 p-4 lg:gap-6 lg:p-6 overflow-auto h-full">
+      <div className="h-[50vh] w-full">
+        <DataTable />
+      </div>
+    </main>
   );
 }
