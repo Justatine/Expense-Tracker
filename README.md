@@ -23,14 +23,19 @@ Set up Drizzle ORM connecting to your Vercel Postgres Database by following this
 Changes on the migration part would be in this [Documentation](https://orm.drizzle.team/kit-docs/upgrade-21#how-to-migrate-to-0210).\
 Important: Refere to my drizzle.config.ts file for updated reference.\
 Commands to Remember:\
-__npx vercel__ - Deploys your project to Vercel\\
-_vercel env pull .env.local_ - Pulls environment variables from Vercel and stores them in a local .env.local file.
+__npx vercel__ - Deploys your project to Vercel\
+__vercel env pull .env.local__ - Pulls environment variables from Vercel and stores them in a local .env.local file.
 \
-_npm i drizzle-orm_ - Installs the Drizzle ORM library    \
-_npm i @vercel/postgres_ - Installs Vercel’s PostgreSQL client to manage and connect to PostgreSQL databases in serverless environments.\
-_npm i -D drizzle-kit_ - Installs Drizzle Kit as a development dependency, a tool used for database migrations and schema generation\
-_npx drizzle-kit generate_ -.Automatically generates database schema and migration files using Drizzle Kit.\
-_npx tsx scripts/migrate.ts_ - Executes the TypeScript script for running database migrations.\
-_npx tsx scripts/seed.ts_ - Executes the TypeScript script for seeding the database with initial data.
-\
-_npx drizzle-kit push_ - Pushes your database migrations to the remote database, applying any new changes to the schema.\
+__npm i drizzle-orm__ - Installs the Drizzle ORM library\
+
+__npm i @vercel/postgres__ - Installs Vercel’s PostgreSQL client to manage and connect to PostgreSQL databases in serverless environments.\
+
+__npm i -D drizzle-__ - Installs Drizzle Kit as a development dependency, a tool used for database migrations and schema generation\
+
+__npx drizzle-kit generate__ -.Automatically generates database schema and migration files using Drizzle Kit.\
+
+__npx tsx scripts/migrate.ts__ - Executes the TypeScript script for running database migrations.\
+
+__npx tsx scripts/seed.ts__ - Executes the TypeScript script for seeding the database with initial data.\
+
+__npx drizzle-kit push__ - Pushes your database migrations to the remote database, applying any new changes to the schema.\
