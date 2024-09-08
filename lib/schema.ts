@@ -3,22 +3,28 @@ import {
     serial,
     text,
     timestamp,
-    uniqueIndex,
+    integer,
+    foreignKey,
   } from "drizzle-orm/pg-core";
   
-  export const users = pgTable(
-    "users",
+  export const expenseCategories = pgTable(
+    "expense_categories",
     {
       id: serial("id").primaryKey(),
-      name: text("name").notNull(),
-      email: text("email").notNull(),
-      password: text("password"),
-      image: text("image").notNull(),
+      category: text("category").notNull(),
       createdAt: timestamp("createdAt").defaultNow().notNull(),
-    },
-    (users) => {
-      return {
-        uniqueIdx: uniqueIndex("unique_idx").on(users.email),
-      };
     }
   );
+  
+  export const expenses = pgTable(
+    "expenses",
+    {
+      id: serial("id").primaryKey(),
+      userId: integer("user_id").notNull(), 
+      categoryId: integer("category_id").references(() => expenseCategories.id),
+      amount: integer("amount").notNull(),
+      description: text("description").notNull(),
+      createdAt: timestamp("createdAt").defaultNow().notNull(),
+    }
+  );
+  

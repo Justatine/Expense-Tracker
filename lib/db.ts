@@ -1,24 +1,24 @@
 import "@/lib/config";
 import { drizzle } from "drizzle-orm/vercel-postgres";
 import { sql } from "@vercel/postgres";
-import { users } from "./schema";
+import { expenseCategories } from "./schema";
 import * as schema from "./schema";
 
 export const db = drizzle(sql, { schema });
 
-export const getUsers = async () => {
-  const selectResult = await db.select().from(users);
+export const getCategories = async () => {
+  const selectResult = await db.select().from(expenseCategories);
   console.log("Results", selectResult);
   return selectResult;
 };
 
-export type NewUser = typeof users.$inferInsert;
+export type NewCategories = typeof expenseCategories.$inferInsert;
 
-export const insertUser = async (user: NewUser) => {
-  return db.insert(users).values(user).returning();
+export const insertCategory = async (user: NewCategories) => {
+  return db.insert(expenseCategories).values(user).returning();
 };
 
-export const getUsers2 = async () => {
-  const result = await db.query.users.findMany();
+export const getCategories2 = async () => {
+  const result = await db.query.expenseCategories.findMany();
   return result;
 };

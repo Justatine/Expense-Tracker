@@ -1,13 +1,14 @@
-import { getUsers, getUsers2 } from "@/lib/db";
+import { UserButton, SignedIn } from "@clerk/nextjs";
+import { authRole } from "./middlewares/authenticate";
 
 export default async function Home() {
-  const data = await getUsers();
-  const data2 = await getUsers2();
-
+  await authRole();
   return (
     <div>
-      <div>sql-like: {JSON.stringify(data)}</div>
-      <div>relational: {JSON.stringify(data2)}</div>
+      <SignedIn>
+        <div>Root Page Waiting room</div>
+        <UserButton showName />
+      </SignedIn>
     </div>
   );
 }

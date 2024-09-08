@@ -22,6 +22,13 @@ Set up vercel databse by following this [Video](https://www.youtube.com/watch?v=
 Set up Drizzle ORM connecting to your Vercel Postgres Database by following this [Documentation](https://www.fullstackbook.com/blog/nextjs-drizzle-orm-postgresql-vercel-tutorial).\
 Changes on the migration part would be in this [Documentation](https://orm.drizzle.team/kit-docs/upgrade-21#how-to-migrate-to-0210).\
 Important: Refere to my drizzle.config.ts file for updated reference.\
+You can start editing your own database columns.
+Set up clerk auth by following this [Video](https://www.youtube.com/watch?v=QstMsE_HbgM&t=78s)
+On the Clerk Dashboard, Go to Sessions, Customize session token by clicking Edit. Add this code on the claims:\
+{
+	"metadata": "{{user.public_metadata}}"
+}\
+
 
 ## `Commands to Remember`
 
