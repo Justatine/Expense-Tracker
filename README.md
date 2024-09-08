@@ -22,8 +22,11 @@ Set up vercel databse by following this [Video](https://www.youtube.com/watch?v=
 Set up Drizzle ORM connecting to your Vercel Postgres Database by following this [Documentation](https://www.fullstackbook.com/blog/nextjs-drizzle-orm-postgresql-vercel-tutorial).\
 Changes on the migration part would be in this [Documentation](https://orm.drizzle.team/kit-docs/upgrade-21#how-to-migrate-to-0210).\
 Important: Refere to my drizzle.config.ts file for updated reference.\
-Commands to Remember:\
+
+## `Commands to Remember`
+
 __npx vercel__ - Deploys your project to Vercel\
+
 __vercel env pull .env.local__ - Pulls environment variables from Vercel and stores them in a local .env.local file.
 \
 __npm i drizzle-orm__ - Installs the Drizzle ORM library\
