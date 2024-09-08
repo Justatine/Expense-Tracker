@@ -23,7 +23,7 @@ Set up Drizzle ORM connecting to your Vercel Postgres Database by following this
 Changes on the migration part would be in this [Documentation](https://orm.drizzle.team/kit-docs/upgrade-21#how-to-migrate-to-0210).\
 Important: Refere to my drizzle.config.ts file for updated reference.\
 Commands to Remember:\
-__npx vercel__ - Deploys your project to Vercel\
+__npx vercel__ - Deploys your project to Vercel\\
 _vercel env pull .env.local_ - Pulls environment variables from Vercel and stores them in a local .env.local file.
 \
 _npm i drizzle-orm_ - Installs the Drizzle ORM library    \
