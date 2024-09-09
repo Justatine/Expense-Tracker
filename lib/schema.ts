@@ -11,6 +11,7 @@ import {
     "expense_categories",
     {
       id: serial("id").primaryKey(),
+      userId: text("user_id").notNull(),
       category: text("category").notNull(),
       createdAt: timestamp("createdAt").defaultNow().notNull(),
     }
@@ -20,7 +21,7 @@ import {
     "expenses",
     {
       id: serial("id").primaryKey(),
-      userId: integer("user_id").notNull(), 
+      userId: text("user_id").notNull(), 
       categoryId: integer("category_id").references(() => expenseCategories.id),
       amount: integer("amount").notNull(),
       description: text("description").notNull(),

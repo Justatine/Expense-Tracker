@@ -1,5 +1,5 @@
 {
-  "id": "d2e621ac-8411-4f1d-8db7-e39e20ccf9a3",
+  "id": "68cf7e46-06e9-4e05-b1cd-6016c3e88044",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -12,6 +12,12 @@
           "name": "id",
           "type": "serial",
           "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
           "notNull": true
         },
         "category": {
@@ -45,7 +51,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },

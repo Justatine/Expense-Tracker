@@ -1,12 +1,13 @@
 CREATE TABLE IF NOT EXISTS "expense_categories" (
 	"id" serial PRIMARY KEY NOT NULL,
+	"user_id" text NOT NULL,
 	"category" text NOT NULL,
 	"createdAt" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "expenses" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"user_id" integer NOT NULL,
+	"user_id" text NOT NULL,
 	"category_id" integer,
 	"amount" integer NOT NULL,
 	"description" text NOT NULL,
