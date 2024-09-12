@@ -12,7 +12,7 @@ export default function Sidebar() {
           <Link href="/" className="flex items-center gap-2 font-semibold">
             <Package2 className="h-6 w-6" />
             <span className="text-[20px] font-bold text-center my-1 logo-font">
-              To-Do App
+              Expense Tracker
             </span>
           </Link>
         </div>

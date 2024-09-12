@@ -30,7 +30,7 @@ export default function Header() {
       <ModeToggle />
       <MiniSidebar />
       <SignedIn>
-        <UserButton showName/>
+        <UserButton/>
       </SignedIn>
     </header>
   );

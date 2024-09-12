@@ -29,7 +29,7 @@ export default function SidebarMenu() {
       try {
         const response = await axios.get('/api/categories');
         if (response.data.success) {
-          console.log(response.data.categories)
+          // console.log(response.data.categories)
           setExpenseCategories(response.data.categories);
         } else {
           console.error('Failed to fetch categories:', response.data.message);
@@ -42,10 +42,10 @@ export default function SidebarMenu() {
     fetchCategories();
   }, []);
 
-  const handleClick = (link: any) => {
-    setActiveLink(link);
+  const handleClick = (id:string) => {
+    setActiveLink(id);
+    window.location.replace(`/my/${id}`);
   };
-
 
   return (
     <div>
@@ -60,8 +60,8 @@ export default function SidebarMenu() {
                     : ""
                 }`}
                 key={category.id}
-                href={`/my/${category.category}?=${category.id}`}
-                onClick={() => handleClick(category.category)}
+                // href={`/my/${category.id}`}
+                onClick={() => handleClick(category.id)}
               >
                 <div className="flex gap-2 items-center">
                   {category.category}
