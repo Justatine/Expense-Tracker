@@ -13,8 +13,9 @@ import { format } from "date-fns";
 import { CalendarIcon, DollarSign, PhilippinePesoIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
-interface Category { 
+interface Expenses { 
   id: number,
   amount: number,
   description:string,
@@ -23,7 +24,7 @@ interface Category {
 export default function Category() {
   const params = useParams();
   const categoryId = typeof params?.categoryId === 'string' ? params.categoryId : ''; 
-  const [categories, setcategories] = useState<Category[]>([]);
+  const [expenses, setexpenses] = useState<Expenses[]>([]);
   const [date, setDate] = useState<Date>()
   
   useEffect(() => {
@@ -32,7 +33,7 @@ export default function Category() {
         const response = await axios.get(`/api/categories/${id}`);
         if (response.data.success) {
           // console.log(response.data.data);
-          setcategories(response.data.data)
+          setexpenses(response.data.data)
         } else {
 
         }
@@ -46,26 +47,27 @@ export default function Category() {
     }
   }, [categoryId]);
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     
     const formData = new FormData(event.target);
     
-    const amount = formData.get('amount');
+    const amount = Number(formData.get('amount'));
     const description = formData.get('description');
-    const expenseDate = date ? format(date, 'PPP') : 'No date selected';
-    
-    console.log({
-      amount,
-      description,
-      date: expenseDate,
-    });
+
+    const formValues = Object.fromEntries(formData.entries());
+    if (date) { formValues['date'] = format(date, "PPP"); }
+    if (categoryId) { formValues['categoryid'] = categoryId }
+
+    const res = await axios.post('/api/expenses', formValues);
+    res.data.success ? toast.success(res.data.message) : toast.error(res.data.message);
+    setexpenses((prevData) => [...prevData, { id: prevData.length + 1, amount, description: description as string, createdAt: new Date() }]);    
+    event.target.reset(); 
   };
-  
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <div className="w-full lg:w-auto">
+    <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
+      <div className="w-full lg:w-full">
         <div className="p-4 bg-gray-100 rounded-md">
             <Card className="w-full">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -150,26 +152,28 @@ export default function Category() {
             </Card>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-        {categories.map((category, index) => {
-          return (
-            <div key={index} className="space-y-1">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg font-bold">{format(category.createdAt, "PPP")}</CardTitle>        
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    <span className="font-bold">Amount:</span> ₱ {category.amount}
-                  </p>
-                  <p className="text-sm">
-                    <span className="font-bold">Reason:</span> {category.description}
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          );
-        })}
+      <div className="w-full lg:w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
+          {expenses.map((category, index) => {
+            return (
+              <div key={index} className="space-y-0">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg font-bold">{format(category.createdAt, "PPP")}</CardTitle>        
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      <span className="font-bold">Amount:</span> ₱ {category.amount}
+                    </p>
+                    <p className="text-sm">
+                      <span className="font-bold">Reason:</span> {category.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );  

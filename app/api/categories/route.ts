@@ -1,4 +1,4 @@
-import { getCategories, insertCategory } from "@/lib/db";
+import { checkRecord, getCategories, insertCategory, insertExpenses } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 

@@ -1,7 +1,7 @@
 import "@/lib/config";
 import { drizzle } from "drizzle-orm/vercel-postgres";
 import { sql } from "@vercel/postgres";
-import { expenseCategories, expenses } from "./schema";
+import { expenseCategories, expenses } from './schema';
 import * as schema from "./schema";
 import { and, asc, eq } from "drizzle-orm";
 
@@ -44,3 +44,14 @@ export const checkRecord = async (categoryId: number, userId: string) => {
     throw new Error("Database error");
   }
 };
+
+export type NewExpense = typeof expenses.$inferInsert;
+
+export const insertExpenses = async (expense:NewExpense) => {
+  try {
+    return db.insert(expenses).values(expense).returning();
+  } catch (error) {
+    console.error("[ERROR_ADDING_EXPENSE]", error)
+    throw new Error("Database error");
+  }
+}
