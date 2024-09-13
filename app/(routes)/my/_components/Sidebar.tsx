@@ -17,7 +17,6 @@ export default function Sidebar() {
           </Link>
         </div>
         <div className="flex-1 px-3 ">
-          <SidebarProfile />
           <SidebarMenu />
         </div>
         <div className="mt-auto p-4">

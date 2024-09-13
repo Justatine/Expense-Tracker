@@ -3,7 +3,7 @@ import { drizzle } from "drizzle-orm/vercel-postgres";
 import { sql } from "@vercel/postgres";
 import { expenseCategories, expenses } from './schema';
 import * as schema from "./schema";
-import { and, asc, eq } from "drizzle-orm";
+import { and, asc, desc, eq, sum } from "drizzle-orm";
 
 export const db = drizzle(sql, { schema });
 
@@ -30,6 +30,7 @@ export const getExpenses = async (categoryId: number,) => {
   const selectResult = await db.select()
   .from(expenses)
   .where(eq(expenses.categoryId, categoryId))
+  .orderBy(desc(expenses.createdAt));
   return selectResult;
 }
 
@@ -46,6 +47,19 @@ export const checkRecord = async (categoryId: number, userId: string) => {
 };
 
 export type NewExpense = typeof expenses.$inferInsert;
+
+export const getTotal = async (categoryId: number, userId: string) => {
+  try {
+    const result = await db
+      .select({ totalAmount: sum(expenses.amount) })
+      .from(expenses)
+      .where(and(eq(expenses.categoryId, categoryId), eq(expenses.userId, userId)));
+    return result[0]?.totalAmount || 0; 
+  } catch (error) {
+    console.error("[CHECK_RECORD_ERROR]", error);
+    throw new Error("Database error");
+  }
+};
 
 export const insertExpenses = async (expense:NewExpense) => {
   try {

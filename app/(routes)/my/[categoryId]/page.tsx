@@ -25,6 +25,7 @@ export default function Category() {
   const params = useParams();
   const categoryId = typeof params?.categoryId === 'string' ? params.categoryId : ''; 
   const [expenses, setexpenses] = useState<Expenses[]>([]);
+  const [total, setTotal] = useState(0);
   const [date, setDate] = useState<Date>()
   
   useEffect(() => {
@@ -32,7 +33,7 @@ export default function Category() {
       try {
         const response = await axios.get(`/api/categories/${id}`);
         if (response.data.success) {
-          // console.log(response.data.data);
+          setTotal(response.data.total)
           setexpenses(response.data.data)
         } else {
 
@@ -61,18 +62,20 @@ export default function Category() {
 
     const res = await axios.post('/api/expenses', formValues);
     res.data.success ? toast.success(res.data.message) : toast.error(res.data.message);
-    setexpenses((prevData) => [...prevData, { id: prevData.length + 1, amount, description: description as string, createdAt: new Date() }]);    
+    setexpenses((prevData) => [...prevData, { id: prevData.length + 1, amount, description: description as string, createdAt: new Date() }]);   
+    setTotal(Number(total) + amount) 
     event.target.reset(); 
   };
 
-  const handleDelete = async (expenseId:number) => {
+  const handleDelete = async (expenseId:number, amount:number) => {
     const res = await axios.delete(`/api/expenses/${expenseId}`)
     res.data.success ? toast.success(res.data.message) : toast.error(res.data.message);
     setexpenses((prevData) => prevData.filter(expense => expense.id != expenseId))
+    setTotal(Number(total) - amount)
   }
   
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div className="w-full lg:w-full">
         <div className="p-4 bg-gray-100 rounded-md">
             <Card className="w-full">
@@ -81,7 +84,7 @@ export default function Category() {
                 <PhilippinePesoIcon className="h-4 w-4 text-muted-foreground"/>
               </CardHeader>
               <CardContent>
-                <div className="flex text-2xl font-bold"><PhilippinePesoIcon/> 12,345.67</div>
+                <div className="flex text-2xl font-bold"><PhilippinePesoIcon/> {total}</div>
                 <p className="text-xs text-muted-foreground">
                   +20.1% from last month
                 </p>
@@ -175,7 +178,7 @@ export default function Category() {
                     <DeleteIcon
                       type="button"
                       className="cursor-pointer text-red-500 hover:text-red-600 ml-4"
-                      onClick={() => handleDelete(category.id)}
+                      onClick={() => handleDelete(category.id, category.amount)}
                     />
                   </div>
                   <CardContent>

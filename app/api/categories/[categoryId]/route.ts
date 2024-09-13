@@ -1,4 +1,4 @@
-import { checkRecord, getExpenses, insertExpenses } from "@/lib/db";
+import { checkRecord, getExpenses, getTotal, insertExpenses } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
@@ -55,9 +55,10 @@ export async function GET(req: Request, { params }: { params: { categoryId: stri
             return new NextResponse("Category not found for this user", { status: 404 });
         }
     
+        const total = await getTotal(Number(params.categoryId), userId)
         const response = await getExpenses(Number(params.categoryId))
 
-        return NextResponse.json({ success:true, data:response });
+        return NextResponse.json({ success:true, data:response, total:total });
 
     } catch (error) {
       console.log("[TASK_ERROR]", error);
