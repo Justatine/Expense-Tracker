@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import { format } from "date-fns";
-import { CalendarIcon, DollarSign, PhilippinePesoIcon } from "lucide-react";
+import { CalendarIcon, DeleteIcon, DollarSign, PhilippinePesoIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -65,6 +65,12 @@ export default function Category() {
     event.target.reset(); 
   };
 
+  const handleDelete = async (expenseId:number) => {
+    const res = await axios.delete(`/api/expenses/${expenseId}`)
+    res.data.success ? toast.success(res.data.message) : toast.error(res.data.message);
+    setexpenses((prevData) => prevData.filter(expense => expense.id != expenseId))
+  }
+  
   return (
     <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
       <div className="w-full lg:w-full">
@@ -154,13 +160,24 @@ export default function Category() {
       </div>
       <div className="w-full lg:w-full">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
-          {expenses.map((category, index) => {
-            return (
+        {expenses.length < 1 ? (
+            <div className="">No expenses added.</div>
+          ) : (
+            expenses.map((category, index) => (
               <div key={index} className="space-y-0">
                 <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg font-bold">{format(category.createdAt, "PPP")}</CardTitle>        
-                  </CardHeader>
+                  <div className="flex flex-wrap justify-between items-center">
+                    <CardHeader>
+                      <CardTitle className="text-md font-bold">
+                        {format(category.createdAt, "PPP")}
+                      </CardTitle>
+                    </CardHeader>
+                    <DeleteIcon
+                      type="button"
+                      className="cursor-pointer text-red-500 hover:text-red-600 ml-4"
+                      onClick={() => handleDelete(category.id)}
+                    />
+                  </div>
                   <CardContent>
                     <p className="text-sm font-medium text-muted-foreground">
                       <span className="font-bold">Amount:</span> ₱ {category.amount}
@@ -171,8 +188,9 @@ export default function Category() {
                   </CardContent>
                 </Card>
               </div>
-            );
-          })}
+            ))
+          )}
+
         </div>
       </div>
     </div>

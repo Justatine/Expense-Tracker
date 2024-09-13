@@ -55,3 +55,12 @@ export const insertExpenses = async (expense:NewExpense) => {
     throw new Error("Database error");
   }
 }
+
+export const deleteExpense = async (expenseId:number) => {
+  try {
+    return db.delete(expenses).where(eq(expenses.id, expenseId)).returning();
+  } catch (error) {
+    console.error("[ERROR_ADDING_EXPENSE]", error)
+    throw new Error("Database error");
+  }
+}
