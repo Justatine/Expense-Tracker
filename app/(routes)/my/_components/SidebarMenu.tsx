@@ -1,14 +1,6 @@
 "use client";
 
 import { Command, CommandGroup, CommandList } from "@/components/ui/command";
-import {
-  ClipboardList,
-  FolderKanban,
-  Info,
-  LayoutDashboard,
-  Mail,
-  User,
-} from "lucide-react";
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button"
@@ -53,8 +45,13 @@ export default function SidebarMenu() {
 
   const handleAddCategory = async (category:string) => {
     const res = await axios.post('/api/categories', { category });
-    res.data.success ? toast.success(res.data.message) : toast.error(res.data.message);
-    setExpenseCategories((prevData) => [...prevData, { id: Date.now().toString(),  user_id: Date.now().toString(), category: category, createdAt: new Date() }])  
+    if (res.data.success) {
+      toast.success(res.data.message)
+      
+      setExpenseCategories((prevData) => [...prevData, { id: res.data.data.id,  user_id: res.data.data.userId, category: res.data.data.category, createdAt: res.data.data.createdAt }])  
+    }else{
+      toast.error(res.data.message)
+    }
   }
 
   const handleSubmit = (event:any) => {

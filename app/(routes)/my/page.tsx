@@ -1,19 +1,28 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "./_components/DataTable";
 import { DollarSignIcon } from "lucide-react";
 import axios from "axios";
 
 export default async function page() {
-  let total = 0;
+  const [total, setTotal] = useState(0);
 
-  try {
-    const res = await axios.get('/api/total');
-    if (res.data.success) {
-      total = res.data.data;
-    }
-  } catch (error) {
-    console.error('Error fetching total:', error);
-  }
+  useEffect(() => {
+    const fetchTotal = async () => {
+      try {
+        const response = await axios.get('/api/total');
+        if (response.data.success) {
+          setTotal(response.data.data);
+        }
+      } catch (error) {
+        console.error('Error fetching total:', error);
+      }
+    };
+
+    fetchTotal();
+  }, []); 
 
   return (
     <main className="flex flex-col gap-4 p-4 lg:gap-6 lg:p-6 overflow-auto h-full">
@@ -22,7 +31,7 @@ export default async function page() {
           <div className="w-full lg:w-full">
             <Card className="w-full max-w-md">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Spend</CardTitle>
+                <CardTitle className="text-sm font-medium">Total Amount Spend</CardTitle>
                 <DollarSignIcon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>

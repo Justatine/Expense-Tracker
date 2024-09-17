@@ -1,4 +1,4 @@
-import { checkRecord, getExpenses, getTotal, insertExpenses } from "@/lib/db";
+import { checkRecord, getExpenses, deleteCategory } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
@@ -55,13 +55,30 @@ export async function GET(req: Request, { params }: { params: { categoryId: stri
             return new NextResponse("Category not found for this user", { status: 404 });
         }
     
-        const total = await getTotal(Number(params.categoryId), userId)
-        const response = await getExpenses(Number(params.categoryId))
+        const response = await getExpenses(Number(params.categoryId), userId)
 
-        return NextResponse.json({ success:true, data:response, total:total });
+        return NextResponse.json({ success:true, data:response });
 
     } catch (error) {
       console.log("[TASK_ERROR]", error);
       return new NextResponse("Internal server error", { status: 500 });
+    }
+}
+
+export async function DELETE(req: Request, { params }: { params: { categoryId: number } }) {
+    const { userId } = auth();
+    try {
+
+        if(!userId) return NextResponse.json("Unauthenticated", { status: 401 });
+
+        const response  = await deleteCategory(Number(params.categoryId))
+        if (response) {
+            return NextResponse.json({ success: true, message: "Category deleted" });
+        } else {
+            return NextResponse.json({ message: "Category deletion failed" }, { status: 400 });
+        }
+
+    } catch (error) {
+        return NextResponse.json({message:"Failed"},{status:500})
     }
 }

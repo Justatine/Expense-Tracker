@@ -1,5 +1,6 @@
 "use client";
 
+import { AlertModal } from "@/components/modals/alert-modal";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,8 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import { format } from "date-fns";
-import { CalendarIcon, DeleteIcon, DollarSign, PhilippinePesoIcon } from "lucide-react";
-import { useParams } from "next/navigation";
+import { CalendarIcon, DeleteIcon, PhilippinePesoIcon, SettingsIcon } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -23,20 +24,21 @@ interface Expenses {
 }
 export default function Category() {
   const params = useParams();
+  const router = useRouter();
   const categoryId = typeof params?.categoryId === 'string' ? params.categoryId : ''; 
   const [expenses, setexpenses] = useState<Expenses[]>([]);
   const [total, setTotal] = useState(0);
   const [date, setDate] = useState<Date>()
-  
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const fetchCategory = async (id:string) => {
       try {
         const response = await axios.get(`/api/categories/${id}`);
         if (response.data.success) {
-          setTotal(response.data.total)
-          setexpenses(response.data.data)
-        } else {
-
+          setTotal(response.data.data.total.totalAmount)
+          setexpenses(response.data.data.categories)
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -74,11 +76,25 @@ export default function Category() {
     setTotal(Number(total) - amount)
   }
   
+  const deleteCategory = async () => {
+    const res = await axios.delete(`/api/categories/${categoryId}`)
+    res.data.success ? toast.success(res.data.message) : toast.error(res.data.message)
+    setOpen(false);
+    router.push('/')
+  }
+  
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={deleteCategory}
+        loading={loading}
+      />
       <div className="w-full lg:w-full">
         <div className="p-4 bg-gray-100 rounded-md">
-            <Card className="w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+           <Card className="w-full">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Total Amount Spent</CardTitle>
                 <PhilippinePesoIcon className="h-4 w-4 text-muted-foreground"/>
@@ -90,6 +106,24 @@ export default function Category() {
                 </p>
               </CardContent>
             </Card>
+            {/* CARD 2 */}
+            <Card className="w-full">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Manage Category</CardTitle>
+                <SettingsIcon className="h-4 w-4 text-muted-foreground"/>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap text-2xl font-bold gap-2">
+                  <Button className="text-sm px-3 py-1 h-8">Edit</Button>
+                  <Button className="text-sm px-3 py-1 h-8" variant={"destructive"} 
+                  onClick={() => setOpen(true)}>Delete</Button>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Tip: Expenses under the category will also be deleted once you delete.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
             <Card className="mt-1 w-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-md font-bold">Submit an Expense</CardTitle>

@@ -26,13 +26,18 @@ export async function POST(req:Request){
         
         if(!category) return NextResponse.json({message: "Category is required"}, {status:400})
 
+        const converted = category.charAt(0).toUpperCase() + category.slice(1);
         const data = {
-            category: category,
+            category: converted,
             userId: userId
         }  
 
-        await insertCategory(data);
-        return NextResponse.json({success:true, message:"Category added"})
+        const res = await insertCategory(data);
+        if (!res) {
+            return NextResponse.json({success:false, message:"Already exist"})
+        }else{
+            return NextResponse.json({success:true, message:"Category added", data:res})
+        }
     } catch (error) {
         return NextResponse.json({message:"Failed"},{status:500})
     }
