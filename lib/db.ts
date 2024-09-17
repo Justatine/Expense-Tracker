@@ -78,3 +78,16 @@ export const deleteExpense = async (expenseId:number) => {
     throw new Error("Database error");
   }
 }
+
+export const totalSpent = async (userId: string) => {
+  try {
+    const result = await db
+      .select({ totalAmount: sum(expenses.amount) })
+      .from(expenses)
+      .where(and(eq(expenses.userId, userId)));
+    return result[0]?.totalAmount || 0; 
+  } catch (error) {
+    console.error("[CHECK_RECORD_ERROR]", error);
+    throw new Error("Database error");
+  }
+};

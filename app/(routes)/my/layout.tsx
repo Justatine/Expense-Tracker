@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import Sidebar from "./_components/Sidebar";
 import Header from "./_components/Header";
 import { ThemeProvider } from "next-themes";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export default function DashboardLayout({
   children,
@@ -15,11 +17,13 @@ export default function DashboardLayout({
       suppressHydrationWarning={true}
     >
       <ThemeProvider attribute="class">
-        <Sidebar/>
-        <div className="flex flex-col h-screen">
-          <Header/>
-          {children}
-        </div>
+        <Suspense fallback={<Loading/>}>
+          <Sidebar/>
+          <div className="flex flex-col h-screen">
+            <Header/>
+            {children}
+          </div>
+        </Suspense>
       </ThemeProvider>
     </div>
   );
