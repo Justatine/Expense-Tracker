@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "./_components/DataTable";
-import { DollarSignIcon } from "lucide-react";
+import { DollarSignIcon, PhilippinePesoIcon } from "lucide-react";
 import axios from "axios";
 
 export default async function page() {
@@ -32,10 +32,10 @@ export default async function page() {
             <Card className="w-full max-w-md">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Total Amount Spend</CardTitle>
-                <DollarSignIcon className="h-4 w-4 text-muted-foreground" />
+                <PhilippinePesoIcon className="h-4 w-4 text-muted-foreground"/>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">$ {total}</div>
+                <div className="text-2xl font-bold">₱ {total}</div>
                 <p className="text-xs text-muted-foreground">+20.1% from last month</p>
                 <div className="mt-4 text-primary">
                   {/* additional content can go here */}
