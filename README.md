@@ -14,7 +14,13 @@ Backend using Typescript\
 Database used: Postgres\
 
 ## `References`
-Follow this tutorial on [How_to_setup_&_use_Vercel_Postgres](https://www.youtube.com/watch?v=_ad99LhxBeQ).
+Follow this tutorial on [How_to_setup_&_use_Vercel_Postgres](https://www.youtube.com/watch?v=_ad99LhxBeQ).\
+Next.JS [Documentation](https://nextjs.org/docs/app/building-your-application) to Build your Application.\
+[Vercel](https://vercel.com/).\
+Drizzle ORM Documentation for Backend Development [URL](https://orm.drizzle.team/learn/guides).\
+V0.dev for Front-end support [URL](https://v0.dev/).\
+SHADCN-UI framework for Front-end development [URL](https://ui.shadcn.com/docs/).\
+Tailwind CSS for additional Front-end styling [URL](https://tailwindcss.com/docs/installation).
 
 ## `Steps`
 Setup your Next.js project "npx create-next-app@latest 'Your project name' "\
